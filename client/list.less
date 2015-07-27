@@ -1,0 +1,39 @@
+@import 'vars.import.less';
+
+.list {
+	position: relative;
+
+	.bullet {
+		display: inline-block;
+		margin: @bullet/2;
+		width: @bullet;
+		height: @bullet;
+		background-color: @darkgray;
+		.border-radius(@bullet);
+		.transition(all @fast ease-in-out);
+		cursor: pointer;
+
+		&:hover {
+			.transform(scale3d(2,2,1));
+			.transition(all @fast/4 ease-in-out);
+		}
+	}
+
+	input {
+		@twiceBullet: 2 * @bullet;
+		display: inline-block;
+		width: ~"calc(100% - @{twiceBullet})";
+		border: none;
+		padding: @pad/2 @pad;
+
+		&:focus {
+			outline: none;
+		}
+	}	
+
+	.items {
+		margin-left: @bullet;
+		padding-left: @pad * 2;
+		border-left: 1px solid @lightgray;
+	}
+}

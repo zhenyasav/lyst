@@ -1,0 +1,52 @@
+@import 'vars.import.less';
+
+a {
+	color: @blue;
+	text-decoration: none;
+	cursor: pointer;
+	&:visited {
+		color: @blue;
+	}
+}
+
+.floater {
+	h1 {
+		font-size: 100%;
+		padding: 10px;
+		text-transform: uppercase;
+		color: @darkgray;
+
+		&:before {
+			margin-right: 6px;
+		}
+	}
+}
+
+.page {
+	max-width: 600px;
+	margin: 10px auto;
+	padding: 20px;
+	background-color: @white;
+
+	.header { 
+		padding: @pad/2 @pad;
+		font-size: 80%;
+
+		span:first-child {
+			display: none;
+		}
+	}
+
+	>.list {
+		>.bullet {
+			display: none;
+		}
+		>.caption {
+			width: 100%;
+			font-size: 160%;
+		}
+		>.items {
+			margin-left: @pad;
+		}
+	}
+}

@@ -1,0 +1,1 @@
+@DefaultController = RouteController.extend()

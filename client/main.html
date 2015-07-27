@@ -1,0 +1,20 @@
+<head>
+	<title>Lyst</title>
+</head>
+
+
+<body>
+	<div class="floater">
+		<h1 class="ion-ios-checkmark">Lyst</h1>
+	</div>
+	<div class="page">
+		<div class="header">
+			{{#each session "stack"}}
+				{{#with item}}
+					<span> > </span><a href={{_id}}>{{caption}}</a>
+				{{/with}}
+			{{/each}}
+		</div>
+		{{> Router}}
+	</div>
+</body>

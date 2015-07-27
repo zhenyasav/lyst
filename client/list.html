@@ -1,0 +1,10 @@
+<template name="list">
+	<div class="list">
+		<a class="bullet"></a><input type="text" class="caption" placeholder="type here" value={{caption}}>
+		<div class="items">
+			{{#each items}}
+				{{> list item}}
+			{{/each}}
+		</div>
+	</div>
+</template>

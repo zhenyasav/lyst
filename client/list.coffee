@@ -11,10 +11,6 @@ Router.route '/:id',
 					stack.splice index, stack.length - index
 					Session.set 'stack', stack
 
-		# Meteor.setTimeout ->
-		# 	$('.page>.list>.caption').focus()
-		# , 200
-
 caption = (id, el) ->
 	Lists.update id, 
 		$set: 

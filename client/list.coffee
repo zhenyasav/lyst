@@ -11,9 +11,9 @@ Router.route '/:id',
 					stack.splice index, stack.length - index
 					Session.set 'stack', stack
 
-		Meteor.setTimeout ->
-			$('.page>.list>.caption').focus()
-		, 200
+		# Meteor.setTimeout ->
+		# 	$('.page>.list>.caption').focus()
+		# , 200
 
 caption = (id, el) ->
 	Lists.update id, 
@@ -22,11 +22,64 @@ caption = (id, el) ->
 
 decaption = _.debounce caption, 300
 
-newItem = (id) ->
-	Lists.update id,
+newItem = (id, element) ->
+	ancestor = $(element).parents('.list')?[1]
+	data = Blaze.getData ancestor
+	Lists.update data._id,
 		$push:
 			items: Lists.insert
 				created: new Date
+
+removeItem = (id, element) ->
+	ancestor = Blaze.getData ael = $(element).parents('.list')?[1]
+	Lists.remove id
+	Lists.update ancestor._id,
+		$pull: 
+			items: id
+
+	Meteor.setTimeout ->
+		$ ael
+		.find '.caption'
+		.last()
+		.focus()
+	, 10
+
+indentItem = (id, element) ->
+	ancestor = Blaze.getData ael = $(element).parents('.list')?[1]
+	index = ancestor?.items?.indexOf? id
+	prev = ancestor?.items?[index-1]
+	if prev
+		Lists.update ancestor._id,
+			$pull:
+				items: id
+		Lists.update prev,
+			$push:
+				items: id
+
+outdentItem = (id, element) ->
+	ancestors = $ element
+	.parents '.list'
+
+	parent = Blaze.getData ael = ancestors?[1]
+	grandparent = Blaze.getData gpel = ancestors?[2]
+
+	index = grandparent?.items?.indexOf parent._id
+	Lists.update grandparent._id,
+		$push:
+			items:
+				$each: [id]
+				$position: index+1
+	Lists.update parent._id,
+		$pull:
+			items: id
+	Meteor.setTimeout ->
+		$('#' + id).find('.caption').first().focus()
+	, 100
+
+Template.list.onRendered ->
+	$ @firstNode
+	.find '.caption'
+	.focus()
 
 Template.list.helpers
 	
@@ -51,12 +104,29 @@ Template.list.events
 		e.stopPropagation()
 		Meteor.setTimeout =>
 			caption @_id, e.target
-		,10
+		,100
+
+	'keydown input.caption': (e) ->
+		e.stopPropagation()
+
+		fn = switch e.keyCode
+			when Utils.keys.tab
+				e.preventDefault()
+				if e.shiftKey
+					outdentItem
+				else
+					indentItem
+
+		fn? @_id, e.target
 
 	'keyup input.caption': (e) ->
 		e.stopPropagation()
 
-		if e.keyCode is Utils.keys.enter
-			newItem @_id
-		else
-			decaption @_id, e.target
+		fn = switch e.keyCode
+			when Utils.keys.enter then newItem
+			when Utils.keys.backspace
+				removeItem if e.target?.value is ''
+			else 
+				decaption
+
+		fn? @_id, e.target

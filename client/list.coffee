@@ -42,7 +42,8 @@ Template.list.events
 
 		if parents.length
 			parents = _.pluck parents.slice(1).reverse(), '_id'
-			Session.set 'stack', parents
+			existing = Session.get 'stack'
+			Session.set 'stack', (existing ? []).concat parents
 
 		Router.go '/' + @_id
 

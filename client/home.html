@@ -1,0 +1,11 @@
+<template name="home">
+	<a class="button add ion-ios-plus-outline"></a>
+	{{#each .}}
+	<div class="list summary">
+		<h3>{{caption}}</h3>
+
+		<span>{{fromNow}}{{#if items.length}} - {{items.length}} items{{/if}}</span>
+		<a class="button delete ion-ios-close-outline"></a>
+	</div>
+	{{/each}}	
+</template>
